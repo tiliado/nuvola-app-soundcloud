@@ -117,16 +117,43 @@
         {
             data = null;
         }
+        // get SoundCloud art location
         try
         {
-            var url = document.getElementsByClassName("listenArtworkWrapper__artwork")[0]
-                              .getElementsByTagName("DIV")[0]
-                              .getElementsByTagName("SPAN")[0].style.backgroundImage;
-            track.artLocation = url.substr(4,url.length-5) || null;
+          // if shown, prefer the 500x500px art
+          var url = document.getElementsByClassName("listenArtworkWrapper__artwork")[0]
+                            .getElementsByTagName("DIV")[0]
+                            .getElementsByTagName("SPAN")[0].style.backgroundImage;
+          track.artLocation = url.substr(4,url.length-5);
         }
         catch (e)
         {
-            track.artLocation = null;
+          try
+          {
+            // else if shown, prefer the 200x200px art
+            var url = document.getElementsByClassName("genericBadge m-playable m-playing")[0]
+                              .getElementsByClassName("genericBadge__artwork")[0]
+                              .getElementsByClassName("genericBadge__image")[0]
+                              .getElementsByTagName("DIV")[0]
+                              .getElementsByTagName("SPAN")[0].style.backgroundImage;
+            track.artLocation = url.substr(4,url.length-5);
+          }
+          catch (e)
+          {
+            // else, fall back to the 50x50px art
+            try
+            {
+              var url = document.getElementsByClassName("playbackSoundBadge__avatar")[0]
+                                .getElementsByTagName("DIV")[0]
+                                .getElementsByTagName("SPAN")[0].style.backgroundImage;
+              track.artLocation = url.substr(4,url.length-5);
+            }
+            catch (e)
+            {
+              // no art found
+              track.artLocation = null;
+            }
+          }
         }
 
         player.setTrack(track);
