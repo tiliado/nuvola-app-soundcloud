@@ -1,6 +1,7 @@
 {
     "id": "soundcloud",
     "name": "SoundCloud",
+    "requirements": "HTML5AudioRequired",
     "home_url": "https://soundcloud.com",
     "allowed_uri": ".*",
     "maintainer_name": "KiXaM",
