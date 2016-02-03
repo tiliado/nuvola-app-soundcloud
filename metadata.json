@@ -2,13 +2,13 @@
     "id": "soundcloud",
     "name": "SoundCloud",
     "requirements": "HTML5AudioRequired",
-    "home_url": "https://soundcloud.com",
-    "allowed_uri": ".*",
+    "home_url": "https://soundcloud.com/",
+    "allowed_uri": "^https?://(www\\.)?soundcloud\\.com/.*",
     "maintainer_name": "KiXaM",
     "maintainer_link": "https://github.com/kixam",
     "categories": "AudioVideo;Audio;",
     "version_major": 1,
-    "version_minor": 1,
+    "version_minor": 0,
     "api_major": 3,
     "api_minor": 0
 }

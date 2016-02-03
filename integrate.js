@@ -1,5 +1,6 @@
 /*
- * Copyright 2014-2015 Jiří Janoušek <janousek.jiri@gmail.com>
+ * Copyright 2014-2016 Jiří Janoušek <janousek.jiri@gmail.com>
+ * Copyright 2015-2016 @kixam (https://github.com/kixam)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -20,10 +21,6 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-/*
- * TODO: Love song action.
  */
 
 "use strict";
@@ -68,14 +65,18 @@
     {
         Nuvola.WebApp._onInitWebWorker.call(this, emitter);
 
-        Nuvola.actions.connect("ActionActivated", this);
-        player.addExtraActions([ACTION_LIKE, ACTION_SHUFFLE]);
-        document.addEventListener("DOMContentLoaded", this._onPageReady.bind(this));
+        var state = document.readyState;
+        if (state === "interactive" || state === "complete")
+            this._onPageReady();
+        else
+            document.addEventListener("DOMContentLoaded", this._onPageReady.bind(this));
     }
 
     // Page is ready for magic
     WebApp._onPageReady = function()
     {
+        Nuvola.actions.connect("ActionActivated", this);
+        player.addExtraActions([ACTION_LIKE, ACTION_SHUFFLE]);
         this.update();
     }
 
@@ -239,6 +240,7 @@
     /*** { ***
      *** the following cleanup function is largely inspired from web-scrobbler
      *** SOURCE: https://github.com/david-sabata/web-scrobbler/blob/master/connectors/v2/soundcloud.js
+     *** LICENSE: Copyright 2014 David Šabata, see LICENSE-MIT.txt
      ***/
 
     WebApp._getSongData = function(track)
