@@ -240,7 +240,7 @@
     /*** { ***
      *** the following cleanup function is largely inspired from web-scrobbler
      *** SOURCE: https://github.com/david-sabata/web-scrobbler/blob/master/connectors/v2/soundcloud.js
-     *** LICENSE: Copyright 2014 David Šabata, see LICENSE-MIT.txt
+     *** LICENSE: Copyright 2014 David Šabata <david.n.sabata@gmail.com>, see LICENSE-MIT.txt
      ***/
 
     WebApp._getSongData = function(track)

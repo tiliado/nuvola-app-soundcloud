@@ -27,10 +27,12 @@ Copyright
     + License: [2-Clause BSD-license](./LICENSE-BSD.txt)
 
   - `src/icon*.svg`
-    + Copyright 2011 Alexander King <alexanderddking@gmail.com >
+    + Copyright 2011 Alexander King <alexanderddking@gmail.com>
     + Copyright 2011 Arturo Torres Sánchez <arturo.ilhuitemoc@gmail.com>
     + License: [CC-BY-3.0](./LICENSE-CC-BY.txt)
 
   - Other files:
-    + Copyright 2016 @kixam (https://github.com/kixam)
+    + Copyright 2016 KiXaM <aurelien.correia@gmail.com>
     + License: [2-Clause BSD-license](./LICENSE-BSD.txt)
+    + Copyright 2014 David Šabata <david.n.sabata@gmail.com>
+    + License: [MIT license](./LICENSE-MIT.txt)
