@@ -7,8 +7,8 @@ Great to have you here. Here are a few ways you can help make this script better
 Support & Bug Reporting
 -----------------------
 
-Whenever you encounter a bug in Nuvola Player, don't hesitate to report it. First of all, it is
-necessary to submit your issue to the right place.
+Whenever you encounter a bug in Nuvola Player, don't hesitate to report it. **First of all, it is
+necessary to submit your issue to the right place.**
 
 ### Tiliado.eu Website
 
