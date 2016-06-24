@@ -18,12 +18,19 @@ Installation
   * Execute ``make install`` to install files to user's local directory.
   * Don't execute ``make uninstall``. Why would you do that?
 
+Dependencies
+------------
+
+  * GNU Make
+  * SVG optimizer: [Scour](https://github.com/codedread/scour)
+  * SVG converter: Lasem, librsvg, GraphicsMagick, ImageMagick
 
 Copyright
 ---------
 
-  - `Makefile`
+  - `Makefile`, `svg-convert.sh`, `svg-optimize.sh`
     + Copyright 2014-2016 Jiří Janoušek <janousek.jiri@gmail.com>
+    + Copyright 2016 Patrick Burroughs (Celti) <celti@celti.name>
     + License: [2-Clause BSD-license](./LICENSE-BSD.txt)
 
   - `src/icon*.svg`
