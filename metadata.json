@@ -10,5 +10,6 @@
     "version_major": 1,
     "version_minor": 1,
     "api_major": 3,
-    "api_minor": 0
+    "api_minor": 0,
+    "webkitgtk": 21200
 }
