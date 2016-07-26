@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.2 - unreleased
---------------------
+1.2 - July 26th, 2016
+---------------------
 
   * Script was updated according to the latest web app script template:
       * Added information about dependencies.
