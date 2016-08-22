@@ -11,5 +11,6 @@
     "version_minor": 2,
     "api_major": 3,
     "api_minor": 0,
-    "webkitgtk": 21200
+    "webkitgtk": 21200,
+    "license": "2-Clause BSD, CC-BY-3.0, MIT"
 }

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.3 - unreleased
+---------------------
+
+  * Added the license metadata field.
+
 1.2 - July 26th, 2016
 ---------------------
 
