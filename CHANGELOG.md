@@ -5,6 +5,7 @@ Changelog
 ---------------------
 
   * Added the license metadata field.
+  * Ported to use Nuvola SDK.
 
 1.2 - July 26th, 2016
 ---------------------
