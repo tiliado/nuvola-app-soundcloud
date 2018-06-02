@@ -98,7 +98,16 @@
     } catch (e) {
       track.artLocation = null
     }
+
+    track.length = this._timeTotal()
     player.setTrack(track)
+
+    try {
+      var timeElapsed = document.getElementsByClassName('playbackTimeline__timePassed')[0].childNodes[1].textContent
+    } catch (e) {
+      timeElapsed = null
+    }
+    player.setTrackPosition(timeElapsed || null)
 
     var state = PlaybackState.UNKNOWN
     if (this._isButtonEnabled('play')) {
@@ -111,6 +120,9 @@
     player.setCanPause(!this._isButtonEnabled('play'))
     player.setCanGoPrev(this._isButtonEnabled('prev'))
     player.setCanGoNext(this._isButtonEnabled('next'))
+    player.setCanSeek(!!this._progressBar())
+    player.setCanChangeVolume(!!this._volumeBar())
+    player.updateVolume(Nuvola.queryAttribute('.volume__sliderWrapper', 'aria-valuenow'))
     var enabled = {}
     enabled[ACTION_LIKE] = !!this._getButton('like')
     enabled[ACTION_SHUFFLE] = !!this._getButton('shuffle')
@@ -142,6 +154,27 @@
     return false
   }
 
+  WebApp._timeTotal = function () {
+    try {
+      var timeTotal = document.getElementsByClassName('playbackTimeline__duration')[0].childNodes[1].textContent
+    } catch (e) {
+      timeTotal = null
+    }
+    return timeTotal || null
+  }
+
+  WebApp._progressBar = function () {
+    return document.getElementsByClassName('playbackTimeline__progressBackground')[0] || null
+  }
+
+  WebApp._volumeBar = function () {
+    var elm = document.querySelector('.playControls__volume div.volume')
+    if (!elm) {
+      return null
+    }
+    return [elm, elm.querySelector('.volume__sliderBackground')]
+  }
+
   WebApp._onActionActivated = function (emitter, name, param) {
     switch (name) {
       case PlayerAction.TOGGLE_PLAY:
@@ -161,6 +194,20 @@
         break
       case ACTION_SHUFFLE:
         this._clickButton('shuffle')
+        break
+      case PlayerAction.SEEK:
+        var total = Nuvola.parseTimeUsec(this._timeTotal())
+        if (param > 0 && param <= total) {
+          Nuvola.clickOnElement(this._progressBar(), param / total, 0.5)
+        }
+        break
+      case PlayerAction.CHANGE_VOLUME:
+        var volume = this._volumeBar()
+        volume[0].classList.add('expended')
+        volume[0].classList.add('hover')
+        Nuvola.clickOnElement(volume[1], 0.5, 1 - param)
+        volume[0].classList.remove('expended')
+        volume[0].classList.remove('hover')
         break
     }
   }
