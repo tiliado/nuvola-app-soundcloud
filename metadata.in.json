@@ -1,7 +1,6 @@
 {
   "id": "soundcloud",
   "name": "SoundCloud",
-  "requirements": "HTML5AudioRequired",
   "home_url": "https://soundcloud.com/",
   "allowed_uri": "^https?://(www\\.)?soundcloud\\.com/.*",
   "maintainer_name": "Jiří Janoušek",
@@ -11,6 +10,7 @@
   "version_minor": 3,
   "api_major": 4,
   "api_minor": 11,
+  "requirements": "Chromium[65] Codec[MP3] Feature[MSE]",
   "license": "2-Clause BSD, CC-BY-3.0, MIT",
   "build": {
     "icons": [

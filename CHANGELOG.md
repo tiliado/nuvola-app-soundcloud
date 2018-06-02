@@ -4,8 +4,8 @@ Changelog
 +1
 --
 
-  * The check of WebKitGTK+ version was removed as Nuvola 3.0.9 depends on new enough version (2.16.3).
   * New maintainer: Jiří Janoušek. Issue: tiliado/nuvola-app-soundcloud#11
+  * Switched to use Chromium backed for playback without Flash plugin.
 
 1.3 - February 12th, 2017
 -------------------------
