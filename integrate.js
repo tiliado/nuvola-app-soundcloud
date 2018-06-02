@@ -26,10 +26,6 @@
 'use strict';
 
 (function (Nuvola) {
-  // FUTURE: Remove after NP 3.2.0
-  Nuvola.VERSION = Nuvola.VERSION || (
-    Nuvola.VERSION_MAJOR * 10000 + Nuvola.VERSION_MINOR * 100 + Nuvola.VERSION_BUGFIX)
-
   var player = Nuvola.$object(Nuvola.MediaPlayer)
 
   var PlaybackState = Nuvola.PlaybackState
@@ -47,7 +43,7 @@
     'prev': ['skipControl__previous', 'disabled'],
     'next': ['skipControl__next', 'disabled'],
     'like': ['playbackSoundBadge__like', 'sc-button-selected'],
-    'shuffle': ['toggle', 'sc-toggle-active']
+    'shuffle': ['shuffleControl', 'disabled']
   }
 
   var WebApp = Nuvola.$WebApp()
@@ -83,59 +79,25 @@
   }
 
   WebApp.update = function () {
-    var track = {}
+    var track = {title: null, artist: null, album: null}
+
     // track title contains both artist and title names, try parsing one from the other using web-scrobbler filter
-    try {
-      var data = this._getSongData(document.getElementsByClassName('playbackSoundBadge__title')[0].title)
+    var elm = document.querySelector('.playbackSoundBadge__titleLink')
+    if (!elm || !elm.title) {
+      elm = document.querySelector('.playbackSoundBadge__title')
+    }
+    if (elm && elm.title) {
+      var data = this._getSongData(elm.title)
       track.artist = data[0]
       track.title = data[1]
-    } catch (e) {
-      track.title = null
-    }
-    // track album is filled with SoundCloud playlist name
-    try {
-      track.album = document.getElementsByClassName('soundTitle__title g-type-shrinkwrap-inline')[0]
-                                  .getElementsByTagName('SPAN')[0].innerText
-    } catch (e) {
-      track.album = null
-    }
-    // get SoundCloud playlist owner
-    try {
-      var owner = document.getElementsByClassName('soundTitle__usernameHero')[0].innerText
-      if (track.artist === null) { track.artist = owner } else if (track.album !== null) { track.album += ' by ' + owner }
-    } catch (e) {
-      data = null
-    }
-    // get SoundCloud art location
-    try {
-      // if shown, prefer the 500x500px art
-      var url = document.getElementsByClassName('listenArtworkWrapper__artwork')[0]
-        .getElementsByTagName('DIV')[0]
-        .getElementsByTagName('SPAN')[0].style.backgroundImage
-      track.artLocation = url.substr(4, url.length - 5)
-    } catch (e) {
-      try {
-        // else if shown, prefer the 200x200px art
-        url = document.getElementsByClassName('genericBadge m-playable m-playing')[0]
-          .getElementsByClassName('genericBadge__artwork')[0]
-          .getElementsByClassName('genericBadge__image')[0]
-          .getElementsByTagName('DIV')[0]
-          .getElementsByTagName('SPAN')[0].style.backgroundImage
-        track.artLocation = url.substr(4, url.length - 5)
-      } catch (e) {
-        // else, fall back to the 50x50px art
-        try {
-          url = document.getElementsByClassName('playbackSoundBadge__avatar')[0]
-            .getElementsByTagName('DIV')[0]
-            .getElementsByTagName('SPAN')[0].style.backgroundImage
-          track.artLocation = url.substr(4, url.length - 5)
-        } catch (e) {
-          // no art found
-          track.artLocation = null
-        }
-      }
     }
 
+    try {
+      var albumArt = document.querySelector('.playbackSoundBadge__avatar span.sc-artwork').style.backgroundImage
+      track.artLocation = albumArt.substr(5, albumArt.length - 7).replace('50x50.jpg', '500x500.jpg')
+    } catch (e) {
+      track.artLocation = null
+    }
     player.setTrack(track)
 
     var state = PlaybackState.UNKNOWN
@@ -168,7 +130,7 @@
 
   WebApp._isButtonEnabled = function (name) {
     var button = this._getButton(name)
-    return button && !button.className.match(new RegExp('(\\s|^)' + _buttons[name][1] + '(\\s|$)'))
+    return button && !button.classList.contains(_buttons[name][1])
   }
 
   WebApp._clickButton = function (name) {

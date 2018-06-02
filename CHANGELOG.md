@@ -6,6 +6,7 @@ Changelog
 
   * New maintainer: Jiří Janoušek. Issue: tiliado/nuvola-app-soundcloud#11
   * Switched to use Chromium backed for playback without Flash plugin.
+  * Metadata parsing was updated to reflect changes of the website.
 
 1.3 - February 12th, 2017
 -------------------------
