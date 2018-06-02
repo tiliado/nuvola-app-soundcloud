@@ -6,3 +6,9 @@ eu.tiliado.NuvolaAppSoundcloud.desktop
 metadata.json
 nuvola-app-soundcloud
 soundcloud.tar.gz
+/screenshots/
+eu.tiliado.NuvolaAppSoundcloud.service
+eu.tiliado.WebRuntimeAppSoundcloud.appdata.xml
+eu.tiliado.WebRuntimeAppSoundcloud.desktop
+eu.tiliado.WebRuntimeAppSoundcloud.service
+nuvola-app-soundcloud.metainfo.xml
