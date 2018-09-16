@@ -34,7 +34,6 @@
 
   // Custom actions
   var ACTION_LIKE = 'like'
-  var ACTION_SHUFFLE = 'shuffle'
 
   // Relevant buttons
   var _buttons = {
@@ -43,7 +42,7 @@
     'prev': ['skipControl__previous', 'disabled'],
     'next': ['skipControl__next', 'disabled'],
     'like': ['playbackSoundBadge__like', 'sc-button-selected'],
-    'shuffle': ['shuffleControl', 'disabled']
+    'shuffle': ['shuffleControl', 'm-shuffling']
   }
 
   var WebApp = Nuvola.$WebApp()
@@ -51,7 +50,6 @@
   WebApp._onInitAppRunner = function (emitter) {
     Nuvola.WebApp._onInitAppRunner.call(this, emitter)
     Nuvola.actions.addAction('playback', 'win', ACTION_LIKE, C_('Action', 'Like'), null, null, null, false)
-    Nuvola.actions.addAction('playback', 'win', ACTION_SHUFFLE, C_('Action', 'Shuffle'), null, null, null, false)
   }
 
   WebApp._onLastPageRequest = function (emitter, result) {
@@ -74,7 +72,7 @@
 
   WebApp._onPageReady = function () {
     Nuvola.actions.connect('ActionActivated', this)
-    player.addExtraActions([ACTION_LIKE, ACTION_SHUFFLE])
+    player.addExtraActions([ACTION_LIKE])
     this.update()
   }
 
@@ -125,11 +123,11 @@
     player.updateVolume(Nuvola.queryAttribute('.volume__sliderWrapper', 'aria-valuenow'))
     var enabled = {}
     enabled[ACTION_LIKE] = !!this._getButton('like')
-    enabled[ACTION_SHUFFLE] = !!this._getButton('shuffle')
+    enabled[PlayerAction.SHUFFLE] = !!this._getButton('shuffle')
     Nuvola.actions.updateEnabledFlags(enabled)
     var status = {}
     status[ACTION_LIKE] = !this._isButtonEnabled('like')
-    status[ACTION_SHUFFLE] = !this._isButtonEnabled('shuffle')
+    status[PlayerAction.SHUFFLE] = !this._isButtonEnabled('shuffle')
     Nuvola.actions.updateStates(status)
 
     // Schedule the next update
@@ -192,7 +190,7 @@
       case ACTION_LIKE:
         this._clickButton('like')
         break
-      case ACTION_SHUFFLE:
+      case PlayerAction.SHUFFLE:
         this._clickButton('shuffle')
         break
       case PlayerAction.SEEK:
