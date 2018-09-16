@@ -42,7 +42,8 @@
     'prev': ['skipControl__previous', 'disabled'],
     'next': ['skipControl__next', 'disabled'],
     'like': ['playbackSoundBadge__like', 'sc-button-selected'],
-    'shuffle': ['shuffleControl', 'm-shuffling']
+    'shuffle': ['shuffleControl', 'm-shuffling'],
+    'repeat': ['repeatControl', 'disabled']
   }
 
   var WebApp = Nuvola.$WebApp()
@@ -121,13 +122,17 @@
     player.setCanSeek(!!this._progressBar())
     player.setCanChangeVolume(!!this._volumeBar())
     player.updateVolume(Nuvola.queryAttribute('.volume__sliderWrapper', 'aria-valuenow'))
+
+    var repeat = this._getRepeatStatus(this._getButton('repeat'))
     var enabled = {}
     enabled[ACTION_LIKE] = !!this._getButton('like')
     enabled[PlayerAction.SHUFFLE] = !!this._getButton('shuffle')
-    Nuvola.actions.updateEnabledFlags(enabled)
+    enabled[PlayerAction.REPEAT] = repeat !== null
     var status = {}
     status[ACTION_LIKE] = !this._isButtonEnabled('like')
     status[PlayerAction.SHUFFLE] = !this._isButtonEnabled('shuffle')
+    status[PlayerAction.REPEAT] = repeat || 0
+    Nuvola.actions.updateEnabledFlags(enabled)
     Nuvola.actions.updateStates(status)
 
     // Schedule the next update
@@ -173,6 +178,25 @@
     return [elm, elm.querySelector('.volume__sliderBackground')]
   }
 
+  WebApp._getRepeatStatus = function (button) {
+    if (!button ) {
+      return null
+    }
+    var classes = button.classList
+    return classes.contains('m-one') ? Nuvola.PlayerRepeat.TRACK : (
+      classes.contains('m-all') ? Nuvola.PlayerRepeat.PLAYLIST: Nuvola.PlayerRepeat.NONE)
+  }
+
+  WebApp._setRepeatStatus = function (button, repeat) {
+    if (!button) {
+      console.log('Do not have repeat button!')
+      return
+    }
+    while (this._getRepeatStatus(button) !== repeat) {
+      Nuvola.clickOnElement(button)
+    }
+  }
+
   WebApp._onActionActivated = function (emitter, name, param) {
     switch (name) {
       case PlayerAction.TOGGLE_PLAY:
@@ -192,6 +216,9 @@
         break
       case PlayerAction.SHUFFLE:
         this._clickButton('shuffle')
+        break
+      case PlayerAction.REPEAT:
+        this._setRepeatStatus(this._getButton('repeat'), param)
         break
       case PlayerAction.SEEK:
         var total = Nuvola.parseTimeUsec(this._timeTotal())
