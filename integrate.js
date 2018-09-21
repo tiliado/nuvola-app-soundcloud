@@ -179,12 +179,12 @@
   }
 
   WebApp._getRepeatStatus = function (button) {
-    if (!button ) {
+    if (!button) {
       return null
     }
     var classes = button.classList
     return classes.contains('m-one') ? Nuvola.PlayerRepeat.TRACK : (
-      classes.contains('m-all') ? Nuvola.PlayerRepeat.PLAYLIST: Nuvola.PlayerRepeat.NONE)
+      classes.contains('m-all') ? Nuvola.PlayerRepeat.PLAYLIST : Nuvola.PlayerRepeat.NONE)
   }
 
   WebApp._setRepeatStatus = function (button, repeat) {
