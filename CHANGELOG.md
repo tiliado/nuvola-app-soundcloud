@@ -1,6 +1,10 @@
 Changelog
 =========
 
+  * Nuvola 4.13 is required.
+  * The shuffle status was integrated. Issue: tiliado/nuvolaruntime#20
+  * The repeat status was integrated. Issue: tiliado/nuvolaruntime#21
+
 1.4 - June 2nd, 2018
 --------------------
 
