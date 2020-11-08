@@ -26,27 +26,27 @@
 'use strict';
 
 (function (Nuvola) {
-  var player = Nuvola.$object(Nuvola.MediaPlayer)
+  const player = Nuvola.$object(Nuvola.MediaPlayer)
 
-  var PlaybackState = Nuvola.PlaybackState
-  var PlayerAction = Nuvola.PlayerAction
-  var C_ = Nuvola.Translate.pgettext
+  const PlaybackState = Nuvola.PlaybackState
+  const PlayerAction = Nuvola.PlayerAction
+  const C_ = Nuvola.Translate.pgettext
 
   // Custom actions
-  var ACTION_LIKE = 'like'
+  const ACTION_LIKE = 'like'
 
   // Relevant buttons
-  var _buttons = {
+  const _buttons = {
     // internal name : [identifying class, disabled/toggled class]
-    'play': ['playControl', 'playing'],
-    'prev': ['skipControl__previous', 'disabled'],
-    'next': ['skipControl__next', 'disabled'],
-    'like': ['playbackSoundBadge__like', 'sc-button-selected'],
-    'shuffle': ['shuffleControl', 'm-shuffling'],
-    'repeat': ['repeatControl', 'disabled']
+    play: ['playControl', 'playing'],
+    prev: ['skipControl__previous', 'disabled'],
+    next: ['skipControl__next', 'disabled'],
+    like: ['playbackSoundBadge__like', 'sc-button-selected'],
+    shuffle: ['shuffleControl', 'm-shuffling'],
+    repeat: ['repeatControl', 'disabled']
   }
 
-  var WebApp = Nuvola.$WebApp()
+  const WebApp = Nuvola.$WebApp()
 
   WebApp._onInitAppRunner = function (emitter) {
     Nuvola.WebApp._onInitAppRunner.call(this, emitter)
@@ -63,7 +63,7 @@
   WebApp._onInitWebWorker = function (emitter) {
     Nuvola.WebApp._onInitWebWorker.call(this, emitter)
 
-    var state = document.readyState
+    const state = document.readyState
     if (state === 'interactive' || state === 'complete') {
       this._onPageReady()
     } else {
@@ -78,21 +78,21 @@
   }
 
   WebApp.update = function () {
-    var track = {title: null, artist: null, album: null}
+    const track = { title: null, artist: null, album: null }
 
     // track title contains both artist and title names, try parsing one from the other using web-scrobbler filter
-    var elm = document.querySelector('.playbackSoundBadge__titleLink')
+    let elm = document.querySelector('.playbackSoundBadge__titleLink')
     if (!elm || !elm.title) {
       elm = document.querySelector('.playbackSoundBadge__title')
     }
     if (elm && elm.title) {
-      var data = this._getSongData(elm.title)
+      const data = this._getSongData(elm.title)
       track.artist = data[0]
       track.title = data[1]
     }
 
     try {
-      var albumArt = document.querySelector('.playbackSoundBadge__avatar span.sc-artwork').style.backgroundImage
+      const albumArt = document.querySelector('.playbackSoundBadge__avatar span.sc-artwork').style.backgroundImage
       track.artLocation = albumArt.substr(5, albumArt.length - 7).replace('50x50.jpg', '500x500.jpg')
     } catch (e) {
       track.artLocation = null
@@ -101,14 +101,15 @@
     track.length = this._timeTotal()
     player.setTrack(track)
 
+    let timeElapsed
     try {
-      var timeElapsed = document.getElementsByClassName('playbackTimeline__timePassed')[0].childNodes[1].textContent
+      timeElapsed = document.getElementsByClassName('playbackTimeline__timePassed')[0].childNodes[1].textContent
     } catch (e) {
       timeElapsed = null
     }
     player.setTrackPosition(timeElapsed || null)
 
-    var state = PlaybackState.UNKNOWN
+    let state = PlaybackState.UNKNOWN
     if (this._isButtonEnabled('play')) {
       state = PlaybackState.PAUSED
     } else if (this._getButton('play')) {
@@ -123,12 +124,12 @@
     player.setCanChangeVolume(!!this._volumeBar())
     player.updateVolume(Nuvola.queryAttribute('.volume__sliderWrapper', 'aria-valuenow'))
 
-    var repeat = this._getRepeatStatus(this._getButton('repeat'))
-    var enabled = {}
+    const repeat = this._getRepeatStatus(this._getButton('repeat'))
+    const enabled = {}
     enabled[ACTION_LIKE] = !!this._getButton('like')
     enabled[PlayerAction.SHUFFLE] = !!this._getButton('shuffle')
     enabled[PlayerAction.REPEAT] = repeat !== null
-    var status = {}
+    const status = {}
     status[ACTION_LIKE] = !this._isButtonEnabled('like')
     status[PlayerAction.SHUFFLE] = !this._isButtonEnabled('shuffle')
     status[PlayerAction.REPEAT] = repeat || 0
@@ -144,12 +145,12 @@
   }
 
   WebApp._isButtonEnabled = function (name) {
-    var button = this._getButton(name)
+    const button = this._getButton(name)
     return button && !button.classList.contains(_buttons[name][1])
   }
 
   WebApp._clickButton = function (name) {
-    var button = this._getButton(name)
+    const button = this._getButton(name)
     if (button) {
       Nuvola.clickOnElement(button)
       return true
@@ -158,8 +159,9 @@
   }
 
   WebApp._timeTotal = function () {
+    let timeTotal
     try {
-      var timeTotal = document.getElementsByClassName('playbackTimeline__duration')[0].childNodes[1].textContent
+      timeTotal = document.getElementsByClassName('playbackTimeline__duration')[0].childNodes[1].textContent
     } catch (e) {
       timeTotal = null
     }
@@ -171,7 +173,7 @@
   }
 
   WebApp._volumeBar = function () {
-    var elm = document.querySelector('.playControls__volume div.volume')
+    const elm = document.querySelector('.playControls__volume div.volume')
     if (!elm) {
       return null
     }
@@ -182,9 +184,10 @@
     if (!button) {
       return null
     }
-    var classes = button.classList
-    return classes.contains('m-one') ? Nuvola.PlayerRepeat.TRACK : (
-      classes.contains('m-all') ? Nuvola.PlayerRepeat.PLAYLIST : Nuvola.PlayerRepeat.NONE)
+    const classes = button.classList
+    return classes.contains('m-one')
+      ? Nuvola.PlayerRepeat.TRACK
+      : (classes.contains('m-all') ? Nuvola.PlayerRepeat.PLAYLIST : Nuvola.PlayerRepeat.NONE)
   }
 
   WebApp._setRepeatStatus = function (button, repeat) {
@@ -220,36 +223,38 @@
       case PlayerAction.REPEAT:
         this._setRepeatStatus(this._getButton('repeat'), param)
         break
-      case PlayerAction.SEEK:
-        var total = Nuvola.parseTimeUsec(this._timeTotal())
+      case PlayerAction.SEEK: {
+        const total = Nuvola.parseTimeUsec(this._timeTotal())
         if (param > 0 && param <= total) {
           Nuvola.clickOnElement(this._progressBar(), param / total, 0.5)
         }
         break
-      case PlayerAction.CHANGE_VOLUME:
-        var volume = this._volumeBar()
+      }
+      case PlayerAction.CHANGE_VOLUME: {
+        const volume = this._volumeBar()
         volume[0].classList.add('expended')
         volume[0].classList.add('hover')
         Nuvola.clickOnElement(volume[1], 0.5, 1 - param)
         volume[0].classList.remove('expended')
         volume[0].classList.remove('hover')
         break
+      }
     }
   }
 
-    /** * { ***
+  /** * { ***
      *** the following cleanup function is largely inspired from web-scrobbler
      *** SOURCE: https://github.com/david-sabata/web-scrobbler/blob/master/connectors/v2/soundcloud.js
      *** LICENSE: Copyright 2014 David Šabata <david.n.sabata@gmail.com>, see LICENSE-MIT.txt
      ***/
 
   WebApp._getSongData = function (track) {
-    var artist, title
+    let artist, title
     // Sometimes the artist name is in the track title.
     // e.g. Tokyo Rose - Zender Overdrive by Aphasia Records.
     /* jslint regexp: true */
-    var regex = /(.+)\s?[-–:]\s?(.+)/
-    var match = regex.exec(track)
+    const regex = /(.+)\s?[-–:]\s?(.+)/
+    const match = regex.exec(track)
     /* jslint regexp: false */
 
     if (match) {
@@ -264,7 +269,7 @@
     // trim whitespace
     title = title.replace(/^\s+|\s+$/g, '')
 
-        // Strip crap
+    // Strip crap
     title = title.replace(/^\d+\.\s*/, '') // 01.
     title = title.replace(/\s*\*+\s?\S+\s?\*+$/, '') // **NEW**
     title = title.replace(/\s*\[[^\]]+\]$/, '') // [whatever]
@@ -286,7 +291,7 @@
 
     return [artist, title]
   }
-    /** * } ***/
+  /** * } ***/
 
   WebApp.start()
 })(this) // function(Nuvola)
