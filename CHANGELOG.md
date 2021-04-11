@@ -1,6 +1,11 @@
 Sound Cloud Changelog
 =====================
 
+1.6 - April 11th, 2021
+----------------------
+
+ * Reformat code
+
 1.5 - October 14th, 2018
 ------------------------
 
