@@ -1,6 +1,8 @@
 Sound Cloud Changelog
 =====================
 
+ * Fix Google sign-in.
+
 1.6 - April 11th, 2021
 ----------------------
 
