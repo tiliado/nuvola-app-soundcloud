@@ -7,7 +7,7 @@
   "maintainer_link": "https://github.com/fenryxo",
   "categories": "AudioVideo;Audio;",
   "version_major": 1,
-  "version_minor": 6,
+  "version_minor": 7,
   "api_major": 4,
   "api_minor": 13,
   "requirements": "Chromium[65] Codec[MP3] Feature[MSE]",
